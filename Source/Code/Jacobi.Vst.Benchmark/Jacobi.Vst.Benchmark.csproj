@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.12.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Jacobi.Vst.Core\Jacobi.Vst.Core.csproj" />
+    <ProjectReference Include="..\Jacobi.Vst.Interop\Jacobi.Vst.Host.Interop.vcxproj" />
+    <ProjectReference Include="..\Jacobi.Vst.Interop\Jacobi.Vst.Plugin.Interop.vcxproj" />
+    <ProjectReference Include="..\Jacobi.Vst.Plugin.Framework\Jacobi.Vst.Plugin.Framework.csproj" />
+  </ItemGroup>
+
+</Project>
