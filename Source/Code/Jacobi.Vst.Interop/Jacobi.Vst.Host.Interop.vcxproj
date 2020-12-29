@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="PackageDependencies.props" />
+  <!--<Import Project="PackageDependencies.props" />-->
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -19,6 +19,7 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <ProjectGuid>{9D18C652-750B-4B79-AF88-67A18A1CA8D5}</ProjectGuid>
@@ -27,7 +28,9 @@
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
+
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -58,11 +61,14 @@
     <CharacterSet>Unicode</CharacterSet>
     <CLRSupport>NetCore</CLRSupport>
   </PropertyGroup>
+
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
+
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
@@ -75,6 +81,7 @@
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
+
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -282,19 +289,39 @@
   <ItemGroup>
     <None Include="PackageDependencies.props" />
     <None Include="readme.md" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+
+  <!-- Disable the .NET SDK error that prevents using SelfContained=true -->
+  <Target Name="_CheckForLanguageAndFeatureCombinationSupport"></Target>
+
   <ItemGroup>
     <ProjectReference Include="..\Jacobi.Vst.Core\Jacobi.Vst.Core.csproj">
       <Project>{907f0f43-1bb8-4259-ba0b-d9bcdf574b0c}</Project>
     </ProjectReference>
   </ItemGroup>
+
   <ItemGroup>
     <!-- Reference all of Windows Forms -->
     <FrameworkReference Include="Microsoft.WindowsDesktop.App.WindowsForms" />
+
+    <Reference Include="Microsoft.Extensions.Configuration">
+      <HintPath>$(SolutionDir)\packages\Microsoft.Extensions.Configuration.5.0.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Abstractions">
+      <HintPath>$(SolutionDir)\packages\Microsoft.Extensions.Configuration.Abstractions.5.0.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.FileExtensions">
+      <HintPath>$(SolutionDir)\packages\Microsoft.Extensions.Configuration.FileExtensions.5.0.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.FileExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Json">
+      <HintPath>$(SolutionDir)\packages\Microsoft.Extensions.Configuration.Json.5.0.0\lib\netstandard2.1\Microsoft.Extensions.Configuration.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
+
   <ItemGroup>
     <Xml Include="manifest.xml" />
   </ItemGroup>

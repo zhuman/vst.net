@@ -2,11 +2,6 @@
 #include "Utils.h"
 #include "Bootstrapper.h"
 
-#using <Microsoft.Extensions.Configuration.dll>
-#using <Microsoft.Extensions.Configuration.Abstractions.dll>
-#using <Microsoft.Extensions.Configuration.FileExtensions.dll>
-#using <Microsoft.Extensions.Configuration.Json.dll>
-
 // static helper method
 Jacobi::Vst::Core::Plugin::IVstPluginCommandStub^ Bootstrapper::LoadManagedPlugin(System::String^ pluginPath)
 {
