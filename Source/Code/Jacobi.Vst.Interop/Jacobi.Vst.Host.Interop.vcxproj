@@ -287,7 +287,6 @@
   <ItemGroup>
     <None Include="PackageDependencies.props" />
     <None Include="readme.md" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
