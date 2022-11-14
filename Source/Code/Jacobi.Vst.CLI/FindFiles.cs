@@ -12,15 +12,32 @@ namespace Jacobi.Vst.CLI
         // Manually maintain them here.
         private static readonly string[] InteropDependencies = new[]
         {
-            @"Microsoft.Extensions.Configuration\5.0.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.dll",
-            @"Microsoft.Extensions.Configuration.Abstractions\5.0.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.Abstractions.dll",
-            @"Microsoft.Extensions.Configuration.FileExtensions\5.0.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.FileExtensions.dll",
-            @"Microsoft.Extensions.Configuration.Json\5.0.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.Json.dll",
-            @"Microsoft.Extensions.FileProviders.Physical\5.0.0\lib\netstandard2.0\Microsoft.Extensions.FileProviders.Physical.dll",
-            @"Microsoft.Extensions.FileProviders.Abstractions\5.0.0\lib\netstandard2.0\Microsoft.Extensions.FileProviders.Abstractions.dll",
-            @"Microsoft.Extensions.Primitives\5.0.0\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll",
-            @"Microsoft.Extensions.FileSystemGlobbing\5.0.0\lib\netstandard2.0\Microsoft.Extensions.FileSystemGlobbing.dll",
+            @"Microsoft.Extensions.Configuration\6.0.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.dll",
+            @"Microsoft.Extensions.Configuration.Abstractions\6.0.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.Abstractions.dll",
+            @"Microsoft.Extensions.Configuration.FileExtensions\6.0.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.FileExtensions.dll",
+            @"Microsoft.Extensions.Configuration.Json\6.0.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.Json.dll",
+            @"Microsoft.Extensions.FileProviders.Physical\6.0.0\lib\netstandard2.0\Microsoft.Extensions.FileProviders.Physical.dll",
+            @"Microsoft.Extensions.FileProviders.Abstractions\6.0.0\lib\netstandard2.0\Microsoft.Extensions.FileProviders.Abstractions.dll",
+            @"Microsoft.Extensions.Primitives\6.0.0\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll",
+            @"Microsoft.Extensions.FileSystemGlobbing\6.0.0\lib\netstandard2.0\Microsoft.Extensions.FileSystemGlobbing.dll",
         };
+
+        // scan dependency files for these framework monikers. [hack]
+        private static readonly string[] TargetFrameworkMonikers =
+            {
+                "net6.0",
+                "net5.0",
+                "netcoreapp3.1",
+                "netstandard2.1",
+                "netstandard2.0",
+                "netstandard1.6",
+                "netstandard1.5",
+                "netstandard1.4",
+                "netstandard1.3",
+                "netstandard1.2",
+                "netstandard1.1",
+                "netstandard1.0"
+            };
 
         private readonly string _nugetPath;
         private readonly string _binPath;
@@ -61,11 +78,8 @@ namespace Jacobi.Vst.CLI
                 else
                 {
                     var platform = ToString(ProcessorArchitecture);
-
-                    // TODO: detect if the assemblies are at 'lib' or 'processor architecture' level 
-                    // TODO: tfm from params (net5.0)
-                    var path = Path.Combine(_nugetPath, kvp.Key, "lib", "net5.0", platform);
-                    paths.AddRange(Directory.EnumerateFiles(path, "*.dll"));
+                    var dependencies = FindDependencyFiles(kvp.Key, platform);
+                    paths.AddRange(dependencies);
 
                     var rt = kvp.Value.RuntimeTargets?.Keys.FirstOrDefault(rt => rt.Contains(platform));
                     if (rt != null)
@@ -79,6 +93,34 @@ namespace Jacobi.Vst.CLI
                 .Select(dep => Path.Combine(_nugetPath, dep)));
 
             return paths.Select(p => p.Replace("/", "\\")).Distinct();
+        }
+
+        private IEnumerable<string> FindDependencyFiles(string dependency, string platform)
+        {
+            const string fileExt = "*.dll";
+            var pathTemplate = Path.Combine(_nugetPath, dependency, "lib", "{0}");
+
+            foreach (var tfm in TargetFrameworkMonikers)
+            {
+                var path = String.Format(pathTemplate, tfm);
+                if (Directory.Exists(path))
+                {
+                    var files = Directory.EnumerateFiles(path, fileExt);
+                    if (files.Any())
+                        return files;
+                }
+                path = Path.Combine(path, platform);
+                if (Directory.Exists(path))
+                {
+                    var files = Directory.EnumerateFiles(path, fileExt);
+                    if (files.Any())
+                        return files;
+                }
+            }
+
+            ConsoleOutput.Warning(
+                $"No library files (*.dll) could be found for: {dependency}!");
+            return Enumerable.Empty<string>();
         }
 
         private static string ToString(ProcessorArchitecture processorArchitecture)

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+	<TargetFrameworks>net6.0</TargetFrameworks>
     <AssemblyVersion>2.0.0.0</AssemblyVersion>
     <FileVersion>2.0.0.0</FileVersion>
     <Authors>Marc Jacobi</Authors>
@@ -15,7 +15,7 @@
     <RepositoryUrl>https://github.com/obiwanjacobi/vst.net</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>vst vstnet</PackageTags>
-    <Copyright>Copyright © 2008-2020 Jacobi Software</Copyright>
+    <Copyright>Copyright © 2008-2021 Jacobi Software</Copyright>
     <Description>VST.NET 2 Plugin Framework</Description>
   </PropertyGroup>
 
@@ -47,8 +47,8 @@
   </ItemGroup>
   
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
   </ItemGroup>
   
   <ItemGroup>
