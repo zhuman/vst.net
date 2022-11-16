@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" TreatAsLocalProperty="SelfContained">
-  <Import Project="PackageDependencies.props" />
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -28,6 +27,7 @@
     <TargetFramework>net7.0</TargetFramework>
     <GenerateErrorForMissingTargetingPacks>false</GenerateErrorForMissingTargetingPacks>
     <SelfContained>false</SelfContained>
+    <EnableManagedPackageReferenceSupport>true</EnableManagedPackageReferenceSupport>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <ItemGroup>
@@ -302,18 +302,10 @@
   <ItemGroup>
     <!-- Reference all of Windows Forms -->
     <FrameworkReference Include="Microsoft.WindowsDesktop.App.WindowsForms" />
-    <Reference Include="Microsoft.Extensions.Configuration">
-      <HintPath>$(SolutionDir)\packages\Microsoft.Extensions.Configuration.5.0.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration.Abstractions">
-      <HintPath>$(SolutionDir)\packages\Microsoft.Extensions.Configuration.Abstractions.5.0.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.Abstractions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration.FileExtensions">
-      <HintPath>$(SolutionDir)\packages\Microsoft.Extensions.Configuration.FileExtensions.5.0.0\lib\netstandard2.0\Microsoft.Extensions.Configuration.FileExtensions.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.Configuration.Json">
-      <HintPath>$(SolutionDir)\packages\Microsoft.Extensions.Configuration.Json.5.0.0\lib\netstandard2.1\Microsoft.Extensions.Configuration.Json.dll</HintPath>
-    </Reference>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="manifest.xml" />
