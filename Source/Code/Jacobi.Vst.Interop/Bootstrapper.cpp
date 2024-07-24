@@ -2,11 +2,6 @@
 #include "Utils.h"
 #include "Bootstrapper.h"
 
-#using <Microsoft.Extensions.Configuration.dll>
-#using <Microsoft.Extensions.Configuration.Abstractions.dll>
-#using <Microsoft.Extensions.Configuration.FileExtensions.dll>
-#using <Microsoft.Extensions.Configuration.Json.dll>
-
 Bootstrapper::Bootstrapper(System::String^ basePath)
 {
 	//_loadContext = System::Runtime::Loader::AssemblyLoadContext::GetLoadContext(GetType()->Assembly);
