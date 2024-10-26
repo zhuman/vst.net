@@ -46,7 +46,7 @@ namespace Jacobi.Vst3.Core
         internal const int FieldOffset_Type = 0;
         internal const int FieldOffset_Union = 4;
 #endif
-#if X64
+#if X64 || ARM64
         internal const int FieldOffset_Type = 0;
         internal const int FieldOffset_Union = 8;
 #endif

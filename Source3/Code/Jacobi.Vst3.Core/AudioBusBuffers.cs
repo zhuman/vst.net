@@ -33,7 +33,7 @@ namespace Jacobi.Vst3.Core
         internal const int FieldOffset_SilenceFlags = 4;
         internal const int FieldOffset_Union = 12;
 #endif
-#if X64
+#if X64 || ARM64
         internal const int FieldOffset_NumChannels = 0;
         internal const int FieldOffset_SilenceFlags = 8;
         internal const int FieldOffset_Union = 16;

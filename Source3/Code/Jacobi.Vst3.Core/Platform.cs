@@ -7,7 +7,7 @@ namespace Jacobi.Vst3.Core
 #if X86
         public const int StructurePack = 8;
 #endif
-#if X64
+#if X64 || ARM64
         public const int StructurePack = 16;
 #endif
         public const CharSet CharacterSet = CharSet.Unicode;

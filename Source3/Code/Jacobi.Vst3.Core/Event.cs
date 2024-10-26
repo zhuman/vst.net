@@ -80,7 +80,7 @@ namespace Jacobi.Vst3.Core
         internal const int FieldOffset_Type = 20;
         internal const int FieldOffset_Union = 24;
 #endif
-#if X64
+#if X64 || ARM64
         internal const int FieldOffset_BusIndex = 0;
         internal const int FieldOffset_SampleOffset = 8;
         internal const int FieldOffset_PpqPosition = 16;
