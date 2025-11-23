@@ -3,7 +3,6 @@
 namespace Jacobi.Vst3.Core.Common
 {
 
-    [Serializable]
     public class VstException : Exception
     {
         public VstException(int result)
@@ -24,9 +23,5 @@ namespace Jacobi.Vst3.Core.Common
         }
 
         public int Result { get; private set; }
-
-        protected VstException(
-          System.Runtime.Serialization.SerializationInfo info,
-          System.Runtime.Serialization.StreamingContext context) : base(info, context) { }
     }
 }
