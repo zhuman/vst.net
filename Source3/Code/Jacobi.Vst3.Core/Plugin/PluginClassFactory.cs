@@ -205,7 +205,7 @@ namespace Jacobi.Vst3.Plugin
 
                 try
                 {
-                    return Marshal.QueryInterface(unk, ref interfaceId, out instance);
+                    return Marshal.QueryInterface(unk, in interfaceId, out instance);
                 }
                 finally
                 {
