@@ -217,6 +217,61 @@ namespace Interop {
 	}
 
 	// IVstPluginCommands20
+	void VstPluginCommandsImpl::PrepareMidiEvents(System::Int32 capacity)
+	{
+		if (capacity < 1 || capacity > 32768)
+			throw gcnew System::ArgumentOutOfRangeException("capacity");
+		if (_rawMidiCapacity >= capacity)
+			return;
+		auto* midi = new ::Vst2MidiEvent[capacity]();
+		::Vst2Events* block;
+		try
+		{
+			block = reinterpret_cast<::Vst2Events*>(new unsigned char[sizeof(::Vst2Events) + sizeof(::Vst2Event*) * capacity]());
+		}
+		catch (...)
+		{
+			delete[] midi;
+			throw;
+		}
+		for (int index = 0; index < capacity; index++)
+		{
+			midi[index].kind = ::Vst2EventKind::Midi;
+			midi[index].sizeInBytes = sizeof(::Vst2MidiEvent);
+			block->events[index] = reinterpret_cast<::Vst2Event*>(&midi[index]);
+		}
+		delete[] reinterpret_cast<unsigned char*>(_rawMidiBlock);
+		delete[] _rawMidiEvents;
+		_rawMidiBlock = block;
+		_rawMidiEvents = midi;
+		_rawMidiCapacity = capacity;
+	}
+
+	System::Boolean VstPluginCommandsImpl::ProcessMidiEvents(array<System::UInt64>^ events, System::Int32 count, System::Int32 frames)
+	{
+		if (events == nullptr || count < 0 || count > events->Length || count > _rawMidiCapacity || frames < 0)
+			throw gcnew System::ArgumentOutOfRangeException("count");
+		if (_rawMidiBlock == nullptr)
+			throw gcnew System::InvalidOperationException("PrepareMidiEvents must be called before processing MIDI.");
+		int previous = 0;
+		for (int index = 0; index < count; index++)
+		{
+			int delta = static_cast<int>(events[index] >> 32);
+			if (delta < previous || delta >= frames)
+				throw gcnew System::ArgumentException("MIDI deadlines must be sorted inside the half-open block.");
+			auto& midi = _rawMidiEvents[index];
+			midi.deltaFrames = delta;
+			unsigned int message = static_cast<unsigned int>(events[index]);
+			midi.midiData[0] = static_cast<unsigned char>(message);
+			midi.midiData[1] = static_cast<unsigned char>(message >> 8);
+			midi.midiData[2] = static_cast<unsigned char>(message >> 16);
+			midi.midiData[3] = 0;
+			previous = delta;
+		}
+		_rawMidiBlock->eventCount = count;
+		return count == 0 || CallDispatch(Vst2PluginCommands::ProcessEvents, 0, 0, _rawMidiBlock, 0) != 0;
+	}
+
 	System::Boolean VstPluginCommandsImpl::ProcessEvents(array<Jacobi::Vst::Core::VstEvent^>^ events)
 	{
 		ClearCurrentEvents();

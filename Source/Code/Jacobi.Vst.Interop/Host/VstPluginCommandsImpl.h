@@ -20,9 +20,11 @@ namespace Interop {
     /// interface for legacy method support.
     /// </remarks>
     private ref class VstPluginCommandsImpl : Jacobi::Vst::Core::IVstPluginCommands24,
-        Jacobi::Vst::Core::Legacy::IVstPluginCommandsLegacy20, System::IDisposable
+        Jacobi::Vst::Core::Legacy::IVstPluginCommandsLegacy20, Jacobi::Vst::Core::IVstRawMidiCommands, System::IDisposable
     {
     public:
+        virtual void PrepareMidiEvents(System::Int32 capacity);
+        virtual System::Boolean ProcessMidiEvents(array<System::UInt64>^ events, System::Int32 count, System::Int32 frames);
         ~VstPluginCommandsImpl()
         {
             this->!VstPluginCommandsImpl();
@@ -31,6 +33,10 @@ namespace Interop {
         {
             _memoryTracker->ClearAll();
             ClearCurrentEvents();
+            delete[] reinterpret_cast<unsigned char*>(_rawMidiBlock);
+            delete[] _rawMidiEvents;
+            _rawMidiBlock = nullptr;
+            _rawMidiEvents = nullptr;
             delete[] _emptyAudio32;
             delete[] _emptyAudio64;
         }
@@ -535,6 +541,9 @@ namespace Interop {
 
         // unmanaged events passed in during ProcessEvents. Will be deleted after the processing call.
         ::Vst2Events* _currentEvents;
+        ::Vst2Events* _rawMidiBlock;
+        ::Vst2MidiEvent* _rawMidiEvents;
+        int _rawMidiCapacity;
         void ClearCurrentEvents();
 
         // an empty audio buffer array

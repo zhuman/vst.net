@@ -899,6 +899,15 @@
             </summary>
             <returns>Returns the number of Midi Out channels, or 0 (zero) if not supported.</returns>
         </member>
+        <member name="T:Jacobi.Vst.Core.IVstRawMidiCommands">
+            <summary>Optional synchronous borrowed MIDI batch; high word is delta frames, low word is a short MIDI message.</summary>
+        </member>
+        <member name="M:Jacobi.Vst.Core.IVstRawMidiCommands.PrepareMidiEvents(System.Int32)">
+            <summary>Allocates bounded native storage on the plug-in control owner before processing.</summary>
+        </member>
+        <member name="M:Jacobi.Vst.Core.IVstRawMidiCommands.ProcessMidiEvents(System.UInt64[],System.Int32,System.Int32)">
+            <summary>Consumes count values without retaining managed storage or allocating individual events.</summary>
+        </member>
         <member name="T:Jacobi.Vst.Core.Legacy.IVstHostCommandsLegacy10">
             <summary>
             Contains all the operations from VST 1.0 that were deprecated in VST 2.4.
